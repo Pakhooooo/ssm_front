@@ -1,6 +1,8 @@
+import router from "@/router";
 import axios, { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 const service: AxiosInstance = axios.create({
+    baseURL: 'http://localhost:8080/api',
     timeout: 5000
 });
 
@@ -23,8 +25,12 @@ service.interceptors.response.use(
         }
     },
     (error: AxiosError) => {
-        console.log(error);
-        return Promise.reject();
+        if (error.response.status == 401) {
+            router.replace('/login');
+        } else {
+            console.log(error.response.data);
+            return Promise.reject();
+        }
     }
 );
 
