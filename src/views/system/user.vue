@@ -4,9 +4,9 @@
         <div class="container">
             <TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
                 :delFunc="handleDelete" :page-change="changePage" :editFunc="handleEdit">
-                <template #toolbarBtn>
+                <!-- <template #toolbarBtn>
                     <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
-                </template>
+                </template> -->
             </TableCustom>
 
         </div>
@@ -25,7 +25,7 @@ import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { CirclePlusFilled } from '@element-plus/icons-vue';
 import { User } from '@/types/user';
-import { fetchUserData } from '@/api';
+import { fetchUsers } from '@/api';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
@@ -45,9 +45,11 @@ const handleSearch = () => {
 // 表格相关
 let columns = ref([
     { type: 'index', label: '序号', width: 55, align: 'center' },
-    { prop: 'name', label: '用户名' },
+    { prop: 'username', label: '用户名' },
     { prop: 'phone', label: '手机号' },
-    { prop: 'role', label: '角色' },
+    { prop: 'realName', label: '真实姓名' },
+    { prop: 'age', label: '年龄' },
+    { prop: 'sex', label: '性别' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
@@ -57,9 +59,11 @@ const page = reactive({
 })
 const tableData = ref<User[]>([]);
 const getData = async () => {
-    const res = await fetchUserData()
-    tableData.value = res.data.list;
-    page.total = res.data.pageTotal;
+    const res = await fetchUsers(page.index, page.size);
+    console.log(res.data.data.list);
+    
+    tableData.value = res.data.data.list;
+    page.total = res.data.data.total;
 };
 getData();
 
@@ -112,7 +116,7 @@ const handleView = (row: User) => {
             label: '用户ID',
         },
         {
-            prop: 'name',
+            prop: 'userName',
             label: '用户名',
         },
         {

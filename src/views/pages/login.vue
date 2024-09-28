@@ -50,7 +50,7 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 
-import axiosInstance from '@/axios/axios_config'; // 引入自定义的 axios 实例
+import api from '@/api/api';
 import { useAuthStore } from '@/store/auth'; // 导入 Pinia store
 
 interface LoginInfo {
@@ -89,8 +89,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         if (valid) {
             try {
                 // 调用后端登录接口
-                const response = await axiosInstance.post('/auth/user/login', {
-                    userName: param.username,
+                const response = await api.post('/auth/user/login', {
+                    username: param.username,
                     password: param.password,
                 });
                 

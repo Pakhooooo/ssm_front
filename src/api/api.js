@@ -5,18 +5,18 @@ import { useAuthStore } from '../store/auth'; // 确保扩展名
 import { ElMessage } from 'element-plus'
 
 // 创建一个 axios 实例
-const instance = axios.create({
+const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080/api',
     timeout: 5000
 });
 
 //------------------请求拦截-------------------//
 //------------在发送请求之前做些什么------------//
-axios.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use(config => {
     const authStore = useAuthStore();
     const token = authStore.token; // 从 Pinia store 获取 token
     if (token) {
-        config.headers.Authorization = token;
+        config.headers.Authorization = `Bearer ${token}`; // 添加 token 到请求头
     }
     return config;
 }, err => {
@@ -25,7 +25,7 @@ axios.interceptors.request.use(config => {
 })
 
 // 响应拦截器，处理 HTTP 401 错误
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     response => {
         return response;
     },
@@ -41,4 +41,12 @@ axios.interceptors.response.use(
     }
 );
 
-export default instance;
+// 定义通用请求方法
+const api = {
+    get: (url, params) => axiosInstance.get(url, { params }),
+    post: (url, data) => axiosInstance.post(url, data),
+    put: (url, data) => axiosInstance.put(url, data),
+    delete: (url) => axiosInstance.delete(url),
+};
+
+export default api;
