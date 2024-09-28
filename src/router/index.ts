@@ -4,6 +4,8 @@ import Home from '../views/home.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
+import { useAuthStore } from '@/store/auth';
+
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
@@ -273,16 +275,15 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
-    const role = localStorage.getItem('vuems_name');
-    const permiss = usePermissStore();
 
-    if (!role && to.meta.noAuth !== true) {
+    const authStore = useAuthStore();
+    const isAuthenticated = authStore.isAuthenticated; // 检查是否已登录
+
+    if (to.path !== '/login' && !isAuthenticated) {
+        // 如果未登录，跳转到登录页面
         next('/login');
-    } else if (typeof to.meta.permiss == 'string' && !permiss.key.includes(to.meta.permiss)) {
-        // 如果没有权限，则进入403
-        next('/403');
     } else {
-        next();
+        next(); // 已登录或访问登录页，直接通过
     }
 });
 

@@ -30,6 +30,7 @@
                     </el-input>
                 </el-form-item>
                 <div class="pwd-tips">
+                    <el-checkbox class="pwd-checkbox" v-model="checked" label="记住密码" />
                     <el-link type="primary" @click="$router.push('/reset-pwd')">忘记密码</el-link>
                 </div>
                 <el-button class="login-btn" type="primary" size="large" @click="submitForm(login)">登录</el-button>
@@ -48,6 +49,9 @@ import { usePermissStore } from '@/store/permiss';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
+
+import axiosInstance from '@/axios/axios_config'; // 引入自定义的 axios 实例
+import { useAuthStore } from '@/store/auth'; // 导入 Pinia store
 
 interface LoginInfo {
     username: string;
@@ -76,23 +80,46 @@ const rules: FormRules = {
 };
 const permiss = usePermissStore();
 const login = ref<FormInstance>();
-const submitForm = (formEl: FormInstance | undefined) => {
+
+const authStore = useAuthStore();
+
+const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
-    formEl.validate((valid: boolean) => {
+    formEl.validate(async (valid: boolean) => {
         if (valid) {
-            ElMessage.success('登录成功');
-            localStorage.setItem('vuems_name', param.username);
-            const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-            permiss.handleSet(keys);
-            router.push('/');
-            if (checked.value) {
-                localStorage.setItem('login-param', JSON.stringify(param));
-            } else {
-                localStorage.removeItem('login-param');
+            try {
+                // 调用后端登录接口
+                const response = await axiosInstance.post('/auth/user/login', {
+                    userName: param.username,
+                    password: param.password,
+                });
+                
+                ElMessage.success(response.data.message);
+
+                // 保存登录信息到 localStorage
+                // localStorage.setItem('username', param.username);
+                localStorage.setItem('token', response.data.data.accessToken); // 保存 token
+
+                authStore.setToken(response.data.data.accessToken); // 存储 token
+
+                // // 根据用户角色设置权限
+                // const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
+                // permiss.handleSet(keys);
+
+                // 跳转到主页
+                await router.push('/dashboard');
+
+                // 处理"记住我"功能
+                if (checked.value) {
+                    localStorage.setItem('login-param', JSON.stringify(param));
+                } else {
+                    localStorage.removeItem('login-param');
+                }
+            } catch (error) {
+                ElMessage.error(error.response.data.message);
             }
         } else {
             ElMessage.error('登录失败');
-            return false;
         }
     });
 };
