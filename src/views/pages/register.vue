@@ -15,14 +15,38 @@
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="email">
-                    <el-input v-model="param.email" placeholder="邮箱">
+                <el-form-item prop="phone">
+                    <el-input v-model.number="param.phone" placeholder="手机号码">
                         <template #prepend>
                             <el-icon>
-                                <Message />
+                                <Cellphone />
                             </el-icon>
                         </template>
                     </el-input>
+                </el-form-item>
+                <el-form-item prop="realName">
+                    <el-input v-model="param.realName" placeholder="真实姓名">
+                        <template #prepend>
+                            <el-icon>
+                                <User />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="age">
+                    <el-input v-model.number="param.age" placeholder="年龄">
+                        <template #prepend>
+                            <el-icon>
+                                <User />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="sex">
+                    <el-radio-group v-model="param.sex">
+                        <el-radio value="男">男</el-radio>
+                        <el-radio value="女">女</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input
@@ -52,12 +76,16 @@ import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import { Register } from '@/types/user';
+import api from '@/api/api';
 
 const router = useRouter();
 const param = reactive<Register>({
     username: '',
     password: '',
-    email: '',
+    phone: '',
+    realName: '',
+    sex: '男',
+    age: ''
 });
 
 const rules: FormRules = {
@@ -69,17 +97,35 @@ const rules: FormRules = {
         },
     ],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-    email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+    phone: [{ required: true, message: '请输入手机号码', trigger: 'blur' }],
+    realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+    age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
 };
 const register = ref<FormInstance>();
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
-    formEl.validate((valid: boolean) => {
+    formEl.validate(async (valid: boolean) => {
         if (valid) {
-            ElMessage.success('注册成功，请登录');
-            router.push('/login');
+            try {
+                // 调用后端登录接口
+                const response = await api.post('/auth/user/register', {
+                    username: param.username,
+                    password: param.password,
+                    realName: param.realName,
+                    phone: param.phone,
+                    sex: param.sex,
+                    age: param.age
+                });
+                
+                ElMessage.success(response.data.message);
+
+                // 跳转到主页
+                await router.push('/login');
+            } catch (error) {
+                ElMessage.error(error.response.data.message);
+            }
         } else {
-            return false;
+            ElMessage.error('注册失败');
         }
     });
 };

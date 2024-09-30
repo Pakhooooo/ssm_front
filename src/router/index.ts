@@ -279,7 +279,9 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
     const isAuthenticated = authStore.isAuthenticated; // 检查是否已登录
 
-    if (to.path !== '/login' && !isAuthenticated) {
+    if (to.path === '/register') {
+        next();
+    } else if (to.path !== '/login' && !isAuthenticated) {
         // 如果未登录，跳转到登录页面
         next('/login');
     } else {
