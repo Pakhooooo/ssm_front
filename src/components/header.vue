@@ -62,6 +62,8 @@ import { useSidebarStore } from '../store/sidebar';
 import { useRouter } from 'vue-router';
 import imgurl from '../assets/img/img.jpg';
 
+import { logout } from '@/api';
+
 const username: string | null = localStorage.getItem('vuems_name');
 const message: number = 2;
 
@@ -82,6 +84,7 @@ const router = useRouter();
 const handleCommand = (command: string) => {
     if (command == 'loginout') {
         localStorage.removeItem('token');
+        logout();
         router.push('/login');
     } else if (command == 'user') {
         router.push('/ucenter');

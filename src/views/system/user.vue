@@ -23,7 +23,6 @@
 <script setup lang="ts" name="system-user">
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
-import { CirclePlusFilled } from '@element-plus/icons-vue';
 import { User } from '@/types/user';
 import { fetchUsers } from '@/api';
 import TableCustom from '@/components/table-custom.vue';

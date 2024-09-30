@@ -1,10 +1,13 @@
 import api from '@/api/api';
 
-export const fetchData = () => {
-    // return request({
-    //     url: './mock/table.json',
-    //     method: 'get'
-    // });
+export const logout = async () => {
+    try {
+        const response = await api.post('/user/logout', {});
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.log('用户登出失败:', error);
+    }
 };
 
 export const fetchUsers = async (pageNum: number, pageSize: number) => {
