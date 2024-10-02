@@ -23,8 +23,8 @@
 <script setup lang="ts" name="system-user">
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
-import { User } from '@/types/user';
-import { fetchCompetitions } from '@/api/competitionAPI';
+import { Competition } from '@/types/competition';
+import { fetchCompetitions, addCompetition } from '@/api/competitionAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
@@ -56,7 +56,7 @@ const page = reactive({
     size: 10,
     total: 0,
 })
-const tableData = ref<User[]>([]);
+const tableData = ref<Competition[]>([]);
 const getData = async () => {
     const res = await fetchCompetitions(page.index, page.size);
     console.log(res.data.data.list);
@@ -86,13 +86,13 @@ let options = ref<FormOption>({
 const visible = ref(false);
 const isEdit = ref(false);
 const rowData = ref({});
-const handleEdit = (row: User) => {
+const handleEdit = (row: Competition) => {
     rowData.value = { ...row };
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = () => {
-    
+const updateData = (row: Competition) => {
+    addCompetition(row);
     closeDialog();
     getData();
 };
@@ -108,43 +108,39 @@ const viewData = ref({
     row: {},
     list: []
 });
-const handleView = (row: User) => {
+const handleView = (row: Competition) => {
     viewData.value.row = { ...row }
     viewData.value.list = [
         {
             prop: 'id',
-            label: '用户ID',
+            label: 'ID',
         },
         {
-            prop: 'userName',
-            label: '用户名',
+            prop: 'competitionName',
+            label: '比赛名称',
         },
         {
-            prop: 'password',
-            label: '密码',
+            prop: 'competitionDate',
+            label: '比赛时间',
         },
         {
-            prop: 'email',
-            label: '邮箱',
+            prop: 'competitionLocation',
+            label: '比赛地点',
         },
         {
-            prop: 'phone',
-            label: '电话',
+            prop: 'competitionPersonNumber',
+            label: '比赛人数',
         },
         {
-            prop: 'role',
-            label: '角色',
-        },
-        {
-            prop: 'date',
-            label: '注册日期',
-        },
+            prop: 'competitionDescription',
+            label: '比赛描述',
+        }
     ]
     visible1.value = true;
 };
 
 // 删除相关
-const handleDelete = (row: User) => {
+const handleDelete = (row: Competition) => {
     ElMessage.success('删除成功');
 }
 </script>
