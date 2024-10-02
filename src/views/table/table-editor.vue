@@ -46,7 +46,7 @@
 import { ref } from 'vue';
 import { Delete, Edit, CloseBold, Select } from '@element-plus/icons-vue';
 import TableCustom from '@/components/table-custom.vue';
-import { fetchUserData } from '@/api/index';
+import { fetchUserData } from '@/api/userAPI';
 
 let columns = ref([
 	{ type: 'index', label: '序号', width: 55, align: 'center' },

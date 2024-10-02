@@ -223,6 +223,33 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "statistic" */ '../views/element/statistic.vue'),
             },
+            {
+                path: '/competition',
+                name: 'competition',
+                meta: {
+                    title: '比赛信息',
+                    permiss: '128',
+                },
+                component: () => import(/* webpackChunkName: "competition" */ '../views/competition/competition.vue'),
+            },
+            {
+                path: '/competition/register',
+                name: 'competition/register',
+                meta: {
+                    title: '比赛报名',
+                    permiss: '128',
+                },
+                component: () => import(/* webpackChunkName: "competition" */ '../views/competition/competition_register.vue'),
+            },
+            {
+                path: '/competition/score',
+                name: 'competition/score',
+                meta: {
+                    title: '比赛成绩',
+                    permiss: '128',
+                },
+                component: () => import(/* webpackChunkName: "competition" */ '../views/competition/competition_score.vue'),
+            },
         ],
     },
     {

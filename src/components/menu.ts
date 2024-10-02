@@ -218,4 +218,30 @@ export const menuData: Menus[] = [
             },
         ],
     },
+    {
+        id: '7',
+        icon: 'Calendar',
+        index: '7',
+        title: '比赛管理',
+        children: [
+            {
+                id: '71',
+                pid: '7',
+                index: '/competition',
+                title: '比赛信息',
+            },
+            {
+                id: '72',
+                pid: '7',
+                index: '/competition/register',
+                title: '比赛报名',
+            },
+            {
+                id: '73',
+                pid: '7',
+                index: '/competition/score',
+                title: '比赛成绩',
+            }
+        ],
+    },
 ];

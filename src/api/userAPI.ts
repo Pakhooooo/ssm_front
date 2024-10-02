@@ -2,9 +2,7 @@ import api from '@/api/api';
 
 export const logout = async () => {
     try {
-        const response = await api.post('/user/logout', {});
-        console.log(response);
-        return response;
+        await api.post('/user/logout', {});
     } catch (error) {
         console.log('用户登出失败:', error);
     }

@@ -39,7 +39,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Role } from '@/types/role';
-import { fetchRoleData } from '@/api';
+import { fetchRoleData } from '@/api/userAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import RolePermission from './role-permission.vue'
