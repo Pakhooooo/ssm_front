@@ -22,9 +22,8 @@
 
 <script setup lang="ts" name="system-user">
 import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
 import { Competition } from '@/types/competition';
-import { fetchCompetitions, addCompetition } from '@/api/competitionAPI';
+import { fetchCompetitions, addCompetition, deleteCompetition } from '@/api/competitionAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
@@ -36,7 +35,7 @@ const query = reactive({
     name: '',
 });
 const searchOpt = ref<FormOptionList[]>([
-    { type: 'input', label: '用户名：', prop: 'name' }
+    { type: 'input', label: '比赛名称：', prop: 'competitionName' }
 ])
 const handleSearch = () => {
     changePage(1);
@@ -48,7 +47,7 @@ let columns = ref([
     { prop: 'competitionName', label: '比赛名称' },
     { prop: 'competitionDate', label: '比赛时间' },
     { prop: 'competitionLocation', label: '比赛地点' },
-    { prop: 'competitionPersonNumber', label: '比赛人数' },
+    { prop: 'competitionPersonNumber', label: '参赛人数' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
@@ -59,7 +58,6 @@ const page = reactive({
 const tableData = ref<Competition[]>([]);
 const getData = async () => {
     const res = await fetchCompetitions(page.index, page.size);
-    console.log(res.data.data.list);
     
     tableData.value = res.data.data.list;
     page.total = res.data.data.total;
@@ -91,8 +89,8 @@ const handleEdit = (row: Competition) => {
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = (row: Competition) => {
-    addCompetition(row);
+const updateData = async (row: Competition) => {
+    await addCompetition(row);
     closeDialog();
     getData();
 };
@@ -140,8 +138,9 @@ const handleView = (row: Competition) => {
 };
 
 // 删除相关
-const handleDelete = (row: Competition) => {
-    ElMessage.success('删除成功');
+const handleDelete = async (row: Competition) => {
+    await deleteCompetition(row);
+    getData();
 }
 </script>
 

@@ -1,32 +1,52 @@
 import api from '@/api/api';
 import { Competition } from '@/types/competition';
 import moment from 'moment';
+import { ElMessage } from 'element-plus';
 
 export const fetchCompetitions = async (pageNum: number, pageSize: number) => {
     try {
-        const response = await api.post('/competitions', {
+        const response = api.post('/competitions', {
             pageNum: pageNum,
             pageSize: pageSize,
         });
-        console.log(response);
         return response;
     } catch (error) {
-        console.log('获取比赛信息列表失败:', error);
+        ElMessage.error(error.response.data.message);
     }
 };
 
 export const addCompetition = async (competition: Competition) => {
     try {
-        const response = await api.post('/competition/add', {
-            competitionName: competition.competitionName,
-            competitionDate: moment(competition.competitionDate).format('YYYY-MM-DD'),
-            competitionLocation: competition.competitionLocation,
-            competitionPersonNumber: competition.competitionPersonNumber,
-            competitionDescription: competition.competitionDescription
-        });
-        console.log(response);
-        return response;
+        if (competition.id != null) {
+            const response = await api.put('/competition/update', {
+                id: competition.id,
+                competitionName: competition.competitionName,
+                competitionDate: moment(competition.competitionDate).format('YYYY-MM-DD'),
+                competitionLocation: competition.competitionLocation,
+                competitionPersonNumber: competition.competitionPersonNumber,
+                competitionDescription: competition.competitionDescription
+            });
+            ElMessage.success(response.data.message);
+        } else {
+            const response = await api.post('/competition/add', {
+                competitionName: competition.competitionName,
+                competitionDate: moment(competition.competitionDate).format('YYYY-MM-DD'),
+                competitionLocation: competition.competitionLocation,
+                competitionPersonNumber: competition.competitionPersonNumber,
+                competitionDescription: competition.competitionDescription
+            });
+            ElMessage.success(response.data.message);
+        }
     } catch (error) {
-        console.log('新增比赛信息失败:', error);
+        ElMessage.error(error.response.data.message);
+    }
+};
+
+export const deleteCompetition = async (competition: Competition) => {
+    try {
+        const response = await api.delete('/competition/' + competition.id);
+        ElMessage.success(response.data.message);
+    } catch (error) {
+        ElMessage.error(error.response.data.message);
     }
 };
