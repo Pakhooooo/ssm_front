@@ -3,11 +3,12 @@ import { Competition } from '@/types/competition';
 import moment from 'moment';
 import { ElMessage } from 'element-plus';
 
-export const fetchCompetitions = async (pageNum: number, pageSize: number) => {
+export const fetchCompetitions = async (pageNum: number, pageSize: number, query: Record<string, any>) => {
     try {
         const response = api.post('/competitions', {
             pageNum: pageNum,
             pageSize: pageSize,
+            ...query,
         });
         return response;
     } catch (error) {

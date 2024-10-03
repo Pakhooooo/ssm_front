@@ -32,7 +32,7 @@ import { CirclePlusFilled } from '@element-plus/icons-vue';
 
 // 查询相关
 const query = reactive({
-    name: '',
+    competitionName: '',
 });
 const searchOpt = ref<FormOptionList[]>([
     { type: 'input', label: '比赛名称：', prop: 'competitionName' }
@@ -57,7 +57,7 @@ const page = reactive({
 })
 const tableData = ref<Competition[]>([]);
 const getData = async () => {
-    const res = await fetchCompetitions(page.index, page.size);
+    const res = await fetchCompetitions(page.index, page.size, query);
     
     tableData.value = res.data.data.list;
     page.total = res.data.data.total;
