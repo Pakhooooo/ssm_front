@@ -78,7 +78,7 @@ let options = ref<FormOption>({
         { type: 'date', label: '比赛时间', prop: 'competitionDate', required: true },
         { type: 'input', label: '比赛地点', prop: 'competitionLocation', required: true },
         { type: 'number', label: '比赛人数', prop: 'competitionPersonNumber', required: true },
-        { type: 'input', label: '比赛描述', prop: 'competitionDescription', required: true },
+        { type: 'textarea', label: '比赛描述', prop: 'competitionDescription', required: true },
     ]
 })
 const visible = ref(false);
