@@ -1,11 +1,11 @@
 
 export interface User {
-    id: number;
-    name: string;
-    password: string;
+    userId: number;
+    username: string;
+    age: string;
     phone: string;
-    role: string;
-    date: string;
+    sex: string;
+    realName: string;
 }
 
 export interface Register {

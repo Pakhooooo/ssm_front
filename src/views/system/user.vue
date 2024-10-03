@@ -22,9 +22,8 @@
 
 <script setup lang="ts" name="system-user">
 import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
 import { User } from '@/types/user';
-import { fetchUsers } from '@/api/userAPI';
+import { fetchUsers, updateUser, deleteUser } from '@/api/userAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
@@ -32,10 +31,10 @@ import { FormOption, FormOptionList } from '@/types/form-option';
 
 // 查询相关
 const query = reactive({
-    name: '',
+    username: '',
 });
 const searchOpt = ref<FormOptionList[]>([
-    { type: 'input', label: '用户名：', prop: 'name' }
+    { type: 'input', label: '用户名：', prop: 'username' }
 ])
 const handleSearch = () => {
     changePage(1);
@@ -58,8 +57,7 @@ const page = reactive({
 })
 const tableData = ref<User[]>([]);
 const getData = async () => {
-    const res = await fetchUsers(page.index, page.size);
-    console.log(res.data.data.list);
+    const res = await fetchUsers(page.index, page.size, query);
     
     tableData.value = res.data.data.list;
     page.total = res.data.data.total;
@@ -76,11 +74,11 @@ let options = ref<FormOption>({
     labelWidth: '100px',
     span: 12,
     list: [
-        { type: 'input', label: '用户名', prop: 'name', required: true },
+        { type: 'input', disabled: true, label: '用户名', prop: 'username'},
         { type: 'input', label: '手机号', prop: 'phone', required: true },
-        { type: 'input', label: '密码', prop: 'password', required: true },
-        { type: 'input', label: '邮箱', prop: 'email', required: true },
-        { type: 'input', label: '角色', prop: 'role', required: true },
+        { type: 'input', label: '真实姓名', prop: 'realName', required: true },
+        { type: 'number', label: '年龄', prop: 'age', required: true },
+        { type: 'input', label: '性别', prop: 'sex', required: true },
     ]
 })
 const visible = ref(false);
@@ -91,7 +89,8 @@ const handleEdit = (row: User) => {
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = () => {
+const updateData = async (row: User) => {
+    await updateUser(row);
     closeDialog();
     getData();
 };
@@ -111,40 +110,33 @@ const handleView = (row: User) => {
     viewData.value.row = { ...row }
     viewData.value.list = [
         {
-            prop: 'id',
+            prop: 'userId',
             label: '用户ID',
         },
         {
-            prop: 'userName',
+            prop: 'username',
             label: '用户名',
         },
         {
-            prop: 'password',
-            label: '密码',
+            prop: 'realName',
+            label: '真实姓名',
         },
         {
-            prop: 'email',
-            label: '邮箱',
+            prop: 'age',
+            label: '年龄',
         },
         {
-            prop: 'phone',
-            label: '电话',
-        },
-        {
-            prop: 'role',
-            label: '角色',
-        },
-        {
-            prop: 'date',
-            label: '注册日期',
-        },
+            prop: 'sex',
+            label: '性别',
+        }
     ]
     visible1.value = true;
 };
 
 // 删除相关
-const handleDelete = (row: User) => {
-    ElMessage.success('删除成功');
+const handleDelete = async (row: User) => {
+    await deleteUser(row);
+    getData();
 }
 </script>
 
