@@ -21,6 +21,7 @@
 
 ## 项目结构
 
+```
 ssm_front/
 │── public/               # 静态资源
 │── src/
@@ -32,6 +33,7 @@ ssm_front/
 │   ├── App.vue           # 入口组件
 │   └── main.js           # 项目入口文件
 └── package.json          # 项目依赖及配置信息
+```
 
 
 ## 安装步骤
