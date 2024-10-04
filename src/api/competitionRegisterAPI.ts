@@ -26,7 +26,7 @@ export const addRegister = async (register: Register) => {
             ElMessage.success(response.data.message);
         } else {
             const response = await api.post('/register/add', {
-                userId: register.userId,
+                registerName: register.registerName,
                 competitionId: register.competitionName
             });
             ElMessage.success(response.data.message);
