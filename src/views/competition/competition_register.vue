@@ -80,8 +80,7 @@ let options = ref<FormOption>({
             prop: 'competitionName',
             required: true,
             opts: []
-        },
-        { type: 'input', disabled: true, label: '审核状态', prop: 'auditStatus' },
+        }
     ]
 })
 

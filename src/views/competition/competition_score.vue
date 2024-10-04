@@ -4,9 +4,9 @@
         <div class="container">
             <TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
                 :delFunc="handleDelete" :page-change="changePage" :editFunc="handleEdit">
-                <!-- <template #toolbarBtn>
+                <template #toolbarBtn>
                     <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
-                </template> -->
+                </template>
             </TableCustom>
 
         </div>
@@ -21,21 +21,21 @@
 </template>
 
 <script setup lang="ts" name="system-user">
-import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
-import { User } from '@/types/user';
-import { fetchUsers } from '@/api/userAPI';
+import { ref, reactive, onMounted } from 'vue';
+import { Register } from '@/types/register';
+import { fetchScores, addRegister, deleteRegister, fetchCompetitionNames } from '@/api/competitionScoreAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
 import { FormOption, FormOptionList } from '@/types/form-option';
+import { CirclePlusFilled } from '@element-plus/icons-vue';
 
 // 查询相关
 const query = reactive({
-    name: '',
+    competitionName: '',
 });
 const searchOpt = ref<FormOptionList[]>([
-    { type: 'input', label: '用户名：', prop: 'name' }
+    { type: 'input', label: '比赛名称：', prop: 'competitionName' }
 ])
 const handleSearch = () => {
     changePage(1);
@@ -44,11 +44,11 @@ const handleSearch = () => {
 // 表格相关
 let columns = ref([
     { type: 'index', label: '序号', width: 55, align: 'center' },
-    { prop: 'username', label: '用户名' },
-    { prop: 'phone', label: '手机号' },
-    { prop: 'realName', label: '真实姓名' },
-    { prop: 'age', label: '年龄' },
-    { prop: 'sex', label: '性别' },
+    { prop: 'registerName', label: '参赛者姓名' },
+    { prop: 'competitionName', label: '比赛名称' },
+    { prop: 'competitionScore', label: '比赛成绩' },
+    { prop: 'competitionRank', label: '比赛排名' },
+    { prop: 'scoreStatus', label: '成绩状态' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
@@ -56,10 +56,9 @@ const page = reactive({
     size: 10,
     total: 0,
 })
-const tableData = ref<User[]>([]);
+const tableData = ref<Register[]>([]);
 const getData = async () => {
-    const res = await fetchUsers(page.index, page.size);
-    console.log(res.data.data.list);
+    const res = await fetchScores(page.index, page.size, query);
     
     tableData.value = res.data.data.list;
     page.total = res.data.data.total;
@@ -73,25 +72,37 @@ const changePage = (val: number) => {
 
 // 新增/编辑弹窗相关
 let options = ref<FormOption>({
-    labelWidth: '100px',
-    span: 12,
+    labelWidth: '300px',
+    span: 30,
     list: [
-        { type: 'input', label: '用户名', prop: 'name', required: true },
-        { type: 'input', label: '手机号', prop: 'phone', required: true },
-        { type: 'input', label: '密码', prop: 'password', required: true },
-        { type: 'input', label: '邮箱', prop: 'email', required: true },
-        { type: 'input', label: '角色', prop: 'role', required: true },
+        { type: 'input', label: '参赛者姓名', prop: 'registerName', required: true },
+        {
+            type: 'select',
+            label: '比赛名称',
+            prop: 'competitionName',
+            required: true,
+            opts: []
+        },
+        { type: 'input', disabled: true, label: '审核状态', prop: 'auditStatus' },
     ]
 })
+
+onMounted(async () => {
+  const competitionNames = await fetchCompetitionNames();
+  // 填充 opts 列表
+  options.value.list.find(item => item.prop === 'competitionName').opts = competitionNames.data.data;
+});
+
 const visible = ref(false);
 const isEdit = ref(false);
 const rowData = ref({});
-const handleEdit = (row: User) => {
+const handleEdit = (row: Register) => {
     rowData.value = { ...row };
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = () => {
+const updateData = async (row: Register) => {
+    await addRegister(row);
     closeDialog();
     getData();
 };
@@ -107,45 +118,35 @@ const viewData = ref({
     row: {},
     list: []
 });
-const handleView = (row: User) => {
+const handleView = (row: Register) => {
     viewData.value.row = { ...row }
     viewData.value.list = [
         {
             prop: 'id',
-            label: '用户ID',
+            label: 'ID',
         },
         {
-            prop: 'userName',
-            label: '用户名',
+            prop: 'registerName',
+            label: '参赛者姓名',
         },
         {
-            prop: 'password',
-            label: '密码',
+            prop: 'competitionName',
+            label: '比赛名称',
         },
         {
-            prop: 'email',
-            label: '邮箱',
-        },
-        {
-            prop: 'phone',
-            label: '电话',
-        },
-        {
-            prop: 'role',
-            label: '角色',
-        },
-        {
-            prop: 'date',
-            label: '注册日期',
-        },
+            prop: 'auditStatus',
+            label: '审核状态',
+        }
     ]
     visible1.value = true;
 };
 
 // 删除相关
-const handleDelete = (row: User) => {
-    ElMessage.success('删除成功');
+const handleDelete = async (row: Register) => {
+    await deleteRegister(row);
+    getData();
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
