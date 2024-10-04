@@ -21,13 +21,13 @@ export const addRegister = async (register: Register) => {
         if (register.id != null) {
             const response = await api.put('/register/update', {
                 id: register.id,
-                competitionId: register.competitionId
+                competitionId: register.competitionName
             });
             ElMessage.success(response.data.message);
         } else {
             const response = await api.post('/register/add', {
                 userId: register.userId,
-                competitionId: register.competitionId
+                competitionId: register.competitionName
             });
             ElMessage.success(response.data.message);
         }
@@ -44,3 +44,8 @@ export const deleteRegister = async (register: Register) => {
         ElMessage.error(error.response.data.message);
     }
 };
+
+export const fetchCompetitionNames = async () => {
+    const response = await api.get('/register/competition/names');
+    return response;
+}

@@ -78,7 +78,16 @@ let options = ref<FormOption>({
         { type: 'input', label: '手机号', prop: 'phone', required: true },
         { type: 'input', label: '真实姓名', prop: 'realName', required: true },
         { type: 'number', label: '年龄', prop: 'age', required: true },
-        { type: 'input', label: '性别', prop: 'sex', required: true },
+        {
+            type: 'select',
+            label: '性别',
+            prop: 'sex',
+            required: true,
+            opts: [
+                { label: '男', value: '男' },
+                { label: '女', value: '女' },
+            ]
+        },
     ]
 })
 const visible = ref(false);

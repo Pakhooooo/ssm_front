@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts" name="system-user">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { Register } from '@/types/register';
-import { fetchRegisters, addRegister, deleteRegister } from '@/api/competitionRegisterAPI';
+import { fetchRegisters, addRegister, deleteRegister, fetchCompetitionNames } from '@/api/competitionRegisterAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
@@ -79,15 +79,18 @@ let options = ref<FormOption>({
             label: '比赛名称',
             prop: 'competitionName',
             required: true,
-            opts: [
-                { label: '比赛 A', value: 'competitionA' },
-                { label: '比赛 B', value: 'competitionB' },
-                { label: '比赛 C', value: 'competitionC' }
-            ]
+            opts: []
         },
         { type: 'input', disabled: true, label: '审核状态', prop: 'auditStatus' },
     ]
 })
+
+onMounted(async () => {
+  const competitionNames = await fetchCompetitionNames();
+  // 填充 opts 列表
+  options.value.list.find(item => item.prop === 'competitionName').opts = competitionNames.data.data;
+});
+
 const visible = ref(false);
 const isEdit = ref(false);
 const rowData = ref({});
