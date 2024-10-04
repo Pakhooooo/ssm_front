@@ -1,6 +1,5 @@
 import api from '@/api/api';
 import { Register } from '@/types/register';
-import moment from 'moment';
 import { ElMessage } from 'element-plus';
 
 export const fetchRegisters = async (pageNum: number, pageSize: number, query: Record<string, any>) => {

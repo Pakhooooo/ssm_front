@@ -1,6 +1,5 @@
 import api from '@/api/api';
-import { Register } from '@/types/register';
-import moment from 'moment';
+import { Score } from '@/types/score';
 import { ElMessage } from 'element-plus';
 
 export const fetchScores = async (pageNum: number, pageSize: number, query: Record<string, any>) => {
@@ -16,18 +15,21 @@ export const fetchScores = async (pageNum: number, pageSize: number, query: Reco
     }
 };
 
-export const addRegister = async (register: Register) => {
+export const addScore = async (score: Score) => {
     try {
-        if (register.id != null) {
-            const response = await api.put('/register/update', {
-                id: register.id,
-                competitionId: register.competitionName
+        if (score.id != null) {
+            const response = await api.put('/score/update', {
+                id: score.id,
+                competitionScore: score.competitionScore,
+                competitionRank: score.competitionRank
             });
             ElMessage.success(response.data.message);
         } else {
-            const response = await api.post('/register/add', {
-                registerName: register.registerName,
-                competitionId: register.competitionName
+            const response = await api.post('/score/add', {
+                registerName: score.registerName,
+                competitionId: score.competitionName,
+                competitionScore: score.competitionScore,
+                competitionRank: score.competitionRank
             });
             ElMessage.success(response.data.message);
         }
@@ -36,9 +38,9 @@ export const addRegister = async (register: Register) => {
     }
 };
 
-export const deleteRegister = async (register: Register) => {
+export const deleteScore = async (score: Score) => {
     try {
-        const response = await api.delete('/register/' + register.id);
+        const response = await api.delete('/score/' + score.id);
         ElMessage.success(response.data.message);
     } catch (error) {
         ElMessage.error(error.response.data.message);

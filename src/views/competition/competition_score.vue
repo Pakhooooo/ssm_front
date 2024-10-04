@@ -22,8 +22,8 @@
 
 <script setup lang="ts" name="system-user">
 import { ref, reactive, onMounted } from 'vue';
-import { Register } from '@/types/register';
-import { fetchScores, addRegister, deleteRegister, fetchCompetitionNames } from '@/api/competitionScoreAPI';
+import { Score } from '@/types/score';
+import { fetchScores, addScore, deleteScore, fetchCompetitionNames } from '@/api/competitionScoreAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
@@ -56,7 +56,7 @@ const page = reactive({
     size: 10,
     total: 0,
 })
-const tableData = ref<Register[]>([]);
+const tableData = ref<Score[]>([]);
 const getData = async () => {
     const res = await fetchScores(page.index, page.size, query);
     
@@ -83,7 +83,8 @@ let options = ref<FormOption>({
             required: true,
             opts: []
         },
-        { type: 'input', disabled: true, label: '审核状态', prop: 'auditStatus' },
+        { type: 'input', label: '比赛成绩', prop: 'competitionScore', required: true },
+        { type: 'input', label: '比赛排名', prop: 'competitionRank', required: true },
     ]
 })
 
@@ -96,13 +97,13 @@ onMounted(async () => {
 const visible = ref(false);
 const isEdit = ref(false);
 const rowData = ref({});
-const handleEdit = (row: Register) => {
+const handleEdit = (row: Score) => {
     rowData.value = { ...row };
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = async (row: Register) => {
-    await addRegister(row);
+const updateData = async (row: Score) => {
+    await addScore(row);
     closeDialog();
     getData();
 };
@@ -118,7 +119,7 @@ const viewData = ref({
     row: {},
     list: []
 });
-const handleView = (row: Register) => {
+const handleView = (row: Score) => {
     viewData.value.row = { ...row }
     viewData.value.list = [
         {
@@ -142,8 +143,8 @@ const handleView = (row: Register) => {
 };
 
 // 删除相关
-const handleDelete = async (row: Register) => {
-    await deleteRegister(row);
+const handleDelete = async (row: Score) => {
+    await deleteScore(row);
     getData();
 }
 </script>
