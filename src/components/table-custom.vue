@@ -63,6 +63,10 @@
                             <span v-else>
                                 {{ row[item.prop] }}
                             </span>
+                            <!-- <span v-if="item.prop !== 'registration'">{{ row[item.prop] }}</span> -->
+                            <el-button v-if="item.prop === 'registration'" type="success" @click="handleSignUp(row)">
+                                报名
+                            </el-button>
                         </slot>
                     </template>
                 </el-table-column>
@@ -179,6 +183,40 @@ const handleDelete = (row) => {
     })
         .then(async () => {
             props.delFunc(row);
+        })
+        .catch(() => { });
+};
+
+const handleSignUp = (row) => {
+    ElMessageBox.confirm('确定要报名吗？', '提示', {
+        type: 'warning'
+    })
+        .then(async () => {
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        competitionId: row.id, // 传递比赛 ID
+                        // 可以根据需要传递更多数据
+                    }),
+                });
+
+                // 处理响应
+                if (response.ok) {
+                    const data = await response.json();
+                    // ElMessage.success('报名成功！');
+                    // 可选：在这里可以更新 UI 或状态，例如更新比赛状态
+                } else {
+                    const errorData = await response.json();
+                    // ElMessage.error(`报名失败: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Error during signup:', error);
+                // ElMessage.error('网络错误，请重试');
+            }
         })
         .catch(() => { });
 };

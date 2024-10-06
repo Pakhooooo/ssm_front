@@ -49,6 +49,7 @@ let columns = ref([
     { prop: 'competitionLocation', label: '比赛地点' },
     { prop: 'competitionPersonNumber', label: '参赛人数', width: 150 },
     { prop: 'operator', label: '操作', width: 250 },
+    { prop: 'registration', label: '报名', width: 100, align: 'center' }
 ])
 const page = reactive({
     index: 1,

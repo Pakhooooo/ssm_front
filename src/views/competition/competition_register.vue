@@ -4,9 +4,9 @@
         <div class="container">
             <TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
                 :delFunc="handleDelete" :page-change="changePage" :editFunc="handleEdit">
-                <template #toolbarBtn>
+                <!-- <template #toolbarBtn>
                     <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
-                </template>
+                </template> -->
             </TableCustom>
 
         </div>
