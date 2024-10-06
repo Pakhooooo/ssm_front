@@ -54,4 +54,4 @@ http://localhost:5173/
 
 ## 声明
 
-由于我对前端开发不是很熟悉，因此该项目只包含了最基本的用户和比赛的增删改查功能，未包含复杂的前端技术或优化。
+此项目底层基于GitHub开源项目：https://github.com/lin-xin/vue-manage-system
