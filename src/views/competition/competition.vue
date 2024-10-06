@@ -45,9 +45,9 @@ const handleSearch = () => {
 let columns = ref([
     { type: 'index', label: '序号', width: 55, align: 'center' },
     { prop: 'competitionName', label: '比赛名称' },
-    { prop: 'competitionDate', label: '比赛时间' },
+    { prop: 'competitionDate', label: '比赛日期', width: 180 },
     { prop: 'competitionLocation', label: '比赛地点' },
-    { prop: 'competitionPersonNumber', label: '参赛人数' },
+    { prop: 'competitionPersonNumber', label: '参赛人数', width: 150 },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
