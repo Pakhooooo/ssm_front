@@ -18,7 +18,7 @@ export const fetchRegisters = async (pageNum: number, pageSize: number, query: R
 export const addRegister = async (register: Register) => {
     try {
         if (register.id != null) {
-            const response = await api.put('/register/update', {
+            const response = await api.put('/register/edit', {
                 id: register.id,
                 competitionId: register.competitionName
             });

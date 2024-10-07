@@ -19,7 +19,7 @@ export const fetchCompetitions = async (pageNum: number, pageSize: number, query
 export const addCompetition = async (competition: Competition) => {
     try {
         if (competition.id != null) {
-            const response = await api.put('/competition/update', {
+            const response = await api.put('/competition/edit', {
                 id: competition.id,
                 competitionName: competition.competitionName,
                 competitionDate: moment(competition.competitionDate).format('YYYY-MM-DD'),

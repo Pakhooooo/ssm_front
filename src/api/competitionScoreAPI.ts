@@ -18,7 +18,7 @@ export const fetchScores = async (pageNum: number, pageSize: number, query: Reco
 export const addScore = async (score: Score) => {
     try {
         if (score.id != null) {
-            const response = await api.put('/score/update', {
+            const response = await api.put('/score/edit', {
                 id: score.id,
                 competitionScore: score.competitionScore,
                 competitionRank: score.competitionRank
