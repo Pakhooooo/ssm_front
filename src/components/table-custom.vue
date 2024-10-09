@@ -53,7 +53,7 @@
                                 <el-button type="primary" size="small" :icon="Edit" @click="editFunc(row)">
                                     编辑
                                 </el-button>
-                                <el-button type="danger" size="small" :icon="Delete" @click="handleDelete(row)">
+                                <el-button v-permission="{ role: 'ADMIN' }" type="danger" size="small" :icon="Delete" @click="handleDelete(row)">
                                     删除
                                 </el-button>
                             </template>

@@ -32,5 +32,8 @@ export const useAuthStore = defineStore('auth', {
     getters: {
         // 判断用户是否已认证
         isAuthenticated: (state) => !!state.token,
+        hasRole: (state) => (role) => {
+            return state.roles.includes(role);
+        }
     },
 });
