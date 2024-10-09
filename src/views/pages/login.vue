@@ -93,18 +93,25 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                     username: param.username,
                     password: param.password,
                 });
-                
-                ElMessage.success(response.data.message);
+
+                localStorage.setItem('userId', response.data.data.user.id);
+                localStorage.setItem('username', response.data.data.user.username);
 
                 // 保存登录信息到 localStorage
-                // localStorage.setItem('username', param.username);
                 localStorage.setItem('token', response.data.data.accessToken); // 保存 token
 
                 authStore.setToken(response.data.data.accessToken); // 存储 token
 
-                // // 根据用户角色设置权限
-                // const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-                // permiss.handleSet(keys);
+                // 提取并保存角色和权限信息
+                const roles = response.data.data.user.roles.map(role => role.roleCode);
+                const permissions = response.data.data.user.roles
+                    .flatMap(role => role.permissions.map(permission => permission.permissionKey));
+
+                // 保存角色和权限到 localStorage
+                localStorage.setItem('roles', JSON.stringify(roles));
+                localStorage.setItem('permissions', JSON.stringify(permissions));
+
+                ElMessage.success(response.data.message);
 
                 // 跳转到主页
                 await router.push('/dashboard');

@@ -3,6 +3,10 @@ import { defineStore } from 'pinia';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: localStorage.getItem('token'), // 从 localStorage 初始化 token
+        userId: localStorage.getItem('userId'), // 从 localStorage 初始化 userId
+        username: localStorage.getItem('username'), // 初始化用户名
+        roles: JSON.parse(localStorage.getItem('roles')) || [], // 初始化角色
+        permissions: JSON.parse(localStorage.getItem('permissions')) || [], // 初始化权限
     }),
     actions: {
         // 设置 token，并将其保存到 localStorage
@@ -13,7 +17,16 @@ export const useAuthStore = defineStore('auth', {
         // 清除 token，并从 localStorage 中移除
         clearToken() {
             this.token = null;
+            this.userId = null;
+            this.username = null;
+            this.roles = [];
+            this.permissions = [];
+
             localStorage.removeItem('token'); // 移除 localStorage 中的 token
+            localStorage.removeItem('userId');
+            localStorage.removeItem('username');
+            localStorage.removeItem('roles');
+            localStorage.removeItem('permissions');
         },
     },
     getters: {
