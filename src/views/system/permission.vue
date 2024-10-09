@@ -39,7 +39,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Role } from '@/types/role';
-import { fetchRoles } from '@/api/roleAPI';
+import { fetchPermissions } from '@/api/permissionAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import RolePermission from './role-permission.vue'
@@ -60,10 +60,11 @@ const handleSearch = () => {
 // 表格相关
 let columns = ref([
     { type: 'index', label: '序号', width: 55, align: 'center' },
-    { prop: 'roleName', label: '角色名称' },
-    { prop: 'roleCode', label: '角色标识' },
-    // { prop: 'status', label: '状态' },
-    { prop: 'permissions', label: '权限管理' },
+    { prop: 'permissionName', label: '权限名称' },
+    { prop: 'permissionKey', label: '权限标识' },
+    { prop: 'permissionURL', label: '权限URL' },
+    { prop: 'method', label: '权限方法' },
+    { prop: 'permissionType', label: '权限类型' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
@@ -73,7 +74,7 @@ const page = reactive({
 })
 const tableData = ref<Role[]>([]);
 const getData = async () => {
-    const res = await fetchRoles(page.index, page.size, query)
+    const res = await fetchPermissions(page.index, page.size, query)
     tableData.value = res.data.data.list;
     page.total = res.data.data.total;
 };

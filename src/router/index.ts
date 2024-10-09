@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import { usePermissStore } from '../store/permiss';
 import Home from '../views/home.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -44,14 +43,23 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "system-role" */ '../views/system/role.vue'),
             },
             {
-                path: '/system-menu',
-                name: 'system-menu',
+                path: '/system-permission',
+                name: 'system-permission',
                 meta: {
-                    title: '菜单管理',
+                    title: '权限管理',
                     permiss: '13',
                 },
-                component: () => import(/* webpackChunkName: "system-menu" */ '../views/system/menu.vue'),
+                component: () => import(/* webpackChunkName: "system-permission" */ '../views/system/permission.vue'),
             },
+            // {
+            //     path: '/system-menu',
+            //     name: 'system-menu',
+            //     meta: {
+            //         title: '菜单管理',
+            //         permiss: '13',
+            //     },
+            //     component: () => import(/* webpackChunkName: "system-menu" */ '../views/system/menu.vue'),
+            // },
             {
                 path: '/table',
                 name: 'basetable',

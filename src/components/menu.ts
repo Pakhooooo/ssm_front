@@ -26,11 +26,17 @@ export const menuData: Menus[] = [
                 title: '角色管理',
             },
             {
-                id: '13',
+                id: '14',
                 pid: '1',
-                index: '/system-menu',
-                title: '菜单管理',
+                index: '/system-permission',
+                title: '权限管理',
             },
+            // {
+            //     id: '13',
+            //     pid: '1',
+            //     index: '/system-menu',
+            //     title: '菜单管理',
+            // },
         ],
     },
     {

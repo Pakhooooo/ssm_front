@@ -45,7 +45,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useTabsStore } from '@/store/tabs';
-import { usePermissStore } from '@/store/permiss';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
@@ -78,7 +77,6 @@ const rules: FormRules = {
     ],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 };
-const permiss = usePermissStore();
 const login = ref<FormInstance>();
 
 const authStore = useAuthStore();

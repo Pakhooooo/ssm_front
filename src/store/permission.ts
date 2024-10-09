@@ -21,8 +21,7 @@ export default {
             hasPermission = authStore.hasPermission(permission);
         }
 
-        // 如果角色或权限至少一个条件满足，则显示按钮
-        if (!hasRole && !hasPermission) {
+        if (!hasRole || !hasPermission) {
             el.parentNode && el.parentNode.removeChild(el);
         }
     }
