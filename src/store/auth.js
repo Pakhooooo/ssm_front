@@ -34,6 +34,10 @@ export const useAuthStore = defineStore('auth', {
         isAuthenticated: (state) => !!state.token,
         hasRole: (state) => (role) => {
             return state.roles.includes(role);
-        }
+        },
+        // 检查权限
+        hasPermission: (state) => (permissionKey) => {
+            return state.permissions.includes(permissionKey);
+        },
     },
 });

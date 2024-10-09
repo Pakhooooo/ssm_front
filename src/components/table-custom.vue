@@ -50,10 +50,10 @@
                                 <el-button type="warning" size="small" :icon="View" @click="viewFunc(row)">
                                     查看
                                 </el-button>
-                                <el-button type="primary" size="small" :icon="Edit" @click="editFunc(row)">
+                                <el-button v-permission="{ role: 'ADMIN', permission: 'user:update' }" type="primary" size="small" :icon="Edit" @click="editFunc(row)">
                                     编辑
                                 </el-button>
-                                <el-button v-permission="{ role: 'ADMIN' }" type="danger" size="small" :icon="Delete" @click="handleDelete(row)">
+                                <el-button v-permission="{ role: 'ADMIN', permission: 'user:delete' }" type="danger" size="small" :icon="Delete" @click="handleDelete(row)">
                                     删除
                                 </el-button>
                             </template>
