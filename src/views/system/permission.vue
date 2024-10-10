@@ -39,19 +39,20 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Role } from '@/types/role';
-import { fetchPermissions } from '@/api/permissionAPI';
+import { fetchPermissions, updatePermission, deletePermission } from '@/api/permissionAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import RolePermission from './role-permission.vue'
 import { CirclePlusFilled } from '@element-plus/icons-vue';
 import { FormOption, FormOptionList } from '@/types/form-option';
+import { Permission } from '@/types/permission';
 
 // 查询相关
 const query = reactive({
     roleName: '',
 });
 const searchOpt = ref<FormOptionList[]>([
-    { type: 'input', label: '角色名称：', prop: 'name' }
+    { type: 'input', label: '权限名称：', prop: 'name' }
 ])
 const handleSearch = () => {
     changePage(1);
@@ -59,7 +60,7 @@ const handleSearch = () => {
 
 // 表格相关
 let columns = ref([
-    { type: 'index', label: '序号', width: 55, align: 'center' },
+    { prop: 'id', label: 'id', width: 55, align: 'center' },
     { prop: 'permissionName', label: '权限名称' },
     { prop: 'permissionKey', label: '权限标识' },
     { prop: 'permissionURL', label: '权限URL' },
@@ -142,8 +143,9 @@ const handleView = (row: Role) => {
 };
 
 // 删除相关
-const handleDelete = (row: Role) => {
-    ElMessage.success('删除成功');
+const handleDelete = async (row: Permission) => {
+    await deletePermission(row);
+    getData();
 }
 
 
