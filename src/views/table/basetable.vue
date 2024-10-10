@@ -87,6 +87,7 @@ const getData = async () => {
 getData();
 
 const changePage = (val: number) => {
+	console.log('Fetching data for page:', page);
 	page.index = val;
 	getData();
 };
