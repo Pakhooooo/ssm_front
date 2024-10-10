@@ -92,22 +92,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                     password: param.password,
                 });
 
-                localStorage.setItem('userId', response.data.data.user.id);
-                localStorage.setItem('username', response.data.data.user.username);
-
-                // 保存登录信息到 localStorage
-                localStorage.setItem('token', response.data.data.accessToken); // 保存 token
-
-                authStore.setToken(response.data.data.accessToken); // 存储 token
+                const data = response.data.data;
 
                 // 提取并保存角色和权限信息
-                const roles = response.data.data.user.roles.map(role => role.roleCode);
-                const permissions = response.data.data.user.roles
+                const roles = data.user.roles.map(role => role.roleCode);
+                const permissions = data.user.roles
                     .flatMap(role => role.permissions.map(permission => permission.permissionKey));
 
-                // 保存角色和权限到 localStorage
-                localStorage.setItem('roles', JSON.stringify(roles));
-                localStorage.setItem('permissions', JSON.stringify(permissions));
+                authStore.setToken(data.accessToken, data.user.id, data.user.username, roles, permissions);
 
                 ElMessage.success(response.data.message);
 

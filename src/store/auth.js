@@ -10,9 +10,18 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         // 设置 token，并将其保存到 localStorage
-        setToken(token) {
+        setToken(token, userId, username, roles, permissions) {
             this.token = token;
-            localStorage.setItem('token', token); // 保存 token 到 localStorage
+            this.userId = userId;
+            this.username = username;
+            this.roles = roles;
+            this.permissions = permissions;
+        
+            localStorage.setItem('token', token);
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('username', username);
+            localStorage.setItem('roles', JSON.stringify(roles)); // 保存 roles 到 localStorage
+            localStorage.setItem('permissions', JSON.stringify(permissions)); // 保存 permissions 到 localStorage
         },
         // 清除 token，并从 localStorage 中移除
         clearToken() {
