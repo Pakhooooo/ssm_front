@@ -79,11 +79,7 @@ const getData = async () => {
 };
 getData();
 const changePage = (val: number) => {
-    console.log(val);
-    
     page.index = val;
-    console.log('page.index :' + page.index);
-    
     getData();
 };
 
