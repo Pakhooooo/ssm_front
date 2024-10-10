@@ -16,6 +16,16 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);
 }
 
+// 自定义权限指令
+// const permiss = usePermissStore();
+// app.directive('permiss', {
+//     mounted(el, binding) {
+//         if (binding.value && !permiss.key.includes(String(binding.value))) {
+//             el['hidden'] = true;
+//         }
+//     },
+// });
+
 // 全局注册自定义指令
 app.directive('permission', permissionDirective);
 

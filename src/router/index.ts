@@ -29,7 +29,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'system-user',
                 meta: {
                     title: '用户管理',
-                    permiss: '11',
+                    permiss: '25',
                 },
                 component: () => import(/* webpackChunkName: "system-user" */ '../views/system/user.vue'),
             },
@@ -38,7 +38,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'system-role',
                 meta: {
                     title: '角色管理',
-                    permiss: '12',
+                    permiss: '26',
                 },
                 component: () => import(/* webpackChunkName: "system-role" */ '../views/system/role.vue'),
             },
@@ -47,7 +47,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'system-permission',
                 meta: {
                     title: '权限管理',
-                    permiss: '13',
+                    permiss: '27',
                 },
                 component: () => import(/* webpackChunkName: "system-permission" */ '../views/system/permission.vue'),
             },

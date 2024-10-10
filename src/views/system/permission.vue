@@ -63,7 +63,6 @@ let columns = ref([
     { prop: 'permissionName', label: '权限名称' },
     { prop: 'permissionKey', label: '权限标识' },
     { prop: 'permissionURL', label: '权限URL' },
-    { prop: 'method', label: '权限方法' },
     { prop: 'permissionType', label: '权限类型' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
