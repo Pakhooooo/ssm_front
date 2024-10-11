@@ -38,7 +38,7 @@
 <script setup lang="ts" name="system-role">
 import { ref, reactive } from 'vue';
 import { Role } from '@/types/role';
-import { fetchPermissions, updatePermission, deletePermission } from '@/api/permissionAPI';
+import { fetchPermissions, addPermission, deletePermission } from '@/api/permissionAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import RolePermission from './role-permission.vue'
@@ -48,10 +48,10 @@ import { Permission } from '@/types/permission';
 
 // 查询相关
 const query = reactive({
-    roleName: '',
+    permissionName: '',
 });
 const searchOpt = ref<FormOptionList[]>([
-    { type: 'input', label: '权限名称：', prop: 'name' }
+    { type: 'input', label: '权限名称：', prop: 'permissionName' }
 ])
 const handleSearch = () => {
     changePage(1);
@@ -59,10 +59,9 @@ const handleSearch = () => {
 
 // 表格相关
 let columns = ref([
-    { prop: 'id', label: 'id', width: 55, align: 'center' },
+    { type: 'index', label: '序号', width: 55, align: 'center' },
     { prop: 'permissionName', label: '权限名称' },
     { prop: 'permissionKey', label: '权限标识' },
-    { prop: 'permissionURL', label: '权限URL' },
     { prop: 'permissionType', label: '权限类型' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
@@ -71,7 +70,7 @@ const page = reactive({
     size: 10,
     total: 0,
 })
-const tableData = ref<Role[]>([]);
+const tableData = ref<Permission[]>([]);
 const getData = async () => {
     const res = await fetchPermissions(page.index, page.size, query)
     tableData.value = res.data.data.list;
@@ -88,20 +87,32 @@ const options = ref<FormOption>({
     labelWidth: '100px',
     span: 24,
     list: [
-        { type: 'input', label: '角色名称', prop: 'roleName', required: true },
-        { type: 'input', label: '角色标识', prop: 'roleCode', required: true },
-        // { type: 'switch', label: '状态', prop: 'status', required: false, activeText: '启用', inactiveText: '禁用' },
+        { type: 'input', label: '权限名称', prop: 'permissionName', required: true },
+        { type: 'input', label: '权限标识', prop: 'permissionKey', required: true },
+        { type: 'number', label: '父权限ID', prop: 'parentId', required: true },
+        {
+            type: 'select',
+            label: '权限类型',
+            prop: 'permissionType',
+            required: true,
+            opts: [
+                { label: 'MENU', value: 'MENU' },
+                { label: 'BUTTON', value: 'BUTTON' },
+                { label: 'API', value: 'API' },
+            ]
+        },
     ]
 })
 const visible = ref(false);
 const isEdit = ref(false);
 const rowData = ref({});
-const handleEdit = (row: Role) => {
+const handleEdit = (row: Permission) => {
     rowData.value = { ...row };
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = () => {
+const updateData = async (row: Permission) => {
+    await addPermission(row);
     closeDialog();
     getData();
 };
@@ -118,24 +129,24 @@ const viewData = ref({
     list: [],
     column: 1
 });
-const handleView = (row: Role) => {
+const handleView = (row: Permission) => {
     viewData.value.row = { ...row }
     viewData.value.list = [
         {
             prop: 'id',
-            label: '角色ID',
+            label: '权限ID',
         },
         {
-            prop: 'name',
-            label: '角色名称',
+            prop: 'permissionName',
+            label: '权限名称',
         },
         {
-            prop: 'key',
-            label: '角色标识',
+            prop: 'permissionKey',
+            label: '权限标识',
         },
         {
-            prop: 'status',
-            label: '角色状态',
+            prop: 'permissionType',
+            label: '权限类型',
         },
     ]
     visible1.value = true;

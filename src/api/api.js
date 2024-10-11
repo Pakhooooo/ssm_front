@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '../store/auth'; // 确保扩展名
 
 //单独引入element的Message组件，以使用
@@ -34,7 +35,9 @@ axiosInstance.interceptors.response.use(
             // 当接收到 401 错误时，跳转到登录页面
             ElMessage.error('认证已过期，请重新登录');
             const authStore = useAuthStore();
-            authStore.clearToken();             
+            authStore.clearToken();
+             
+            const router = useRouter();
             router.push('/login'); // 跳转到登录页面
         }
         return Promise.reject(error);

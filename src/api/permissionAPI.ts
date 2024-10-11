@@ -15,14 +15,22 @@ export const fetchPermissions = async (pageNum: number, pageSize: number, query:
     }
 };
 
-export const updatePermission = async (row: Permission) => {
+export const addPermission = async (row: Permission) => {
     try {
-        const response = await api.put('/permission/update', {
-            permissionId: row.id,
-            permissionName: row.permissionName
-        });
-        ElMessage.success(response.data.message);
-        return response;
+        if (row.id != null) {
+            const response = await api.put('/permission/update', {
+                id: row.id,
+                permissionName: row.permissionName
+            });
+            ElMessage.success(response.data.message);
+        } else {
+            const response = await api.post('/permission/add', {
+                permissionName: row.permissionName,
+                permissionKey: row.permissionKey,
+                permissionType: row.permissionType
+            });
+            ElMessage.success(response.data.message);
+        }
     } catch (error) {
         ElMessage.error(error.response.data.message);
     }
