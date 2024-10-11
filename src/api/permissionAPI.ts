@@ -19,7 +19,7 @@ export const addPermission = async (row: Permission) => {
     try {
         if (row.id != null) {
             const response = await api.put('/permission/update', {
-                id: row.id,
+                permissionId: row.id,
                 permissionName: row.permissionName
             });
             ElMessage.success(response.data.message);

@@ -89,7 +89,7 @@ const options = ref<FormOption>({
     list: [
         { type: 'input', label: '权限名称', prop: 'permissionName', required: true },
         { type: 'input', label: '权限标识', prop: 'permissionKey', required: true },
-        { type: 'number', label: '父权限ID', prop: 'parentId', required: true },
+        // { type: 'number', label: '父权限ID', prop: 'parentId' },
         {
             type: 'select',
             label: '权限类型',
