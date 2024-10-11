@@ -8,8 +8,8 @@ export default {
         // 如果没有指定角色和权限，直接返回
         if (!role && !permission) return;
 
-        let hasRole = true;
-        let hasPermission = true;
+        let hasRole = false;
+        let hasPermission = false;
 
         // 检查角色
         if (role) {
@@ -21,7 +21,7 @@ export default {
             hasPermission = authStore.hasPermission(permission);
         }
 
-        if (!hasRole || !hasPermission) {
+        if (!hasRole && !hasPermission) {
             el.parentNode && el.parentNode.removeChild(el);
         }
     }

@@ -24,8 +24,8 @@
         <el-dialog title="查看详情" v-model="visible1" width="700px" destroy-on-close>
             <TableDetail :data="viewData">
                 <template #status="{ rows }">
-                    <el-tag type="success" v-if="rows.status">启用</el-tag>
-                    <el-tag type="danger" v-else>禁用</el-tag>
+                    <!-- <el-tag type="success" v-if="rows.status">启用</el-tag>
+                    <el-tag type="danger" v-else>禁用</el-tag> -->
                 </template>
             </TableDetail>
         </el-dialog>
@@ -37,9 +37,8 @@
 
 <script setup lang="ts" name="system-role">
 import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
 import { Role } from '@/types/role';
-import { fetchRoles } from '@/api/roleAPI';
+import { fetchRoles, addRole, deleteRole } from '@/api/roleAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import RolePermission from './role-permission.vue'
@@ -101,7 +100,8 @@ const handleEdit = (row: Role) => {
     isEdit.value = true;
     visible.value = true;
 };
-const updateData = () => {
+const updateData = async (role: Role) => {
+    await addRole(role);
     closeDialog();
     getData();
 };
@@ -126,24 +126,25 @@ const handleView = (row: Role) => {
             label: '角色ID',
         },
         {
-            prop: 'name',
+            prop: 'roleName',
             label: '角色名称',
         },
         {
-            prop: 'key',
+            prop: 'roleCode',
             label: '角色标识',
         },
-        {
-            prop: 'status',
-            label: '角色状态',
-        },
+        // {
+        //     prop: 'status',
+        //     label: '角色状态',
+        // },
     ]
     visible1.value = true;
 };
 
 // 删除相关
-const handleDelete = (row: Role) => {
-    ElMessage.success('删除成功');
+const handleDelete = async (role: Role) => {
+    await deleteRole(role);
+    getData();
 }
 
 

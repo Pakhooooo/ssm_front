@@ -1,8 +1,8 @@
 
 export interface Role {
     id: number;
-    name: string;
-    key: string;
-    status: boolean;
+    roleName: string;
+    roleCode: string;
+    // status: boolean;
     permiss: string[]
 }

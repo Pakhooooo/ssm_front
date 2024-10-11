@@ -2,10 +2,10 @@
     <div>
         <TableSearch :query="query" :options="searchOpt" :search="handleSearch" />
         <div class="container">
-            <<TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
+            <TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
             :delFunc="handleDelete" :changePage="changePage" :editFunc="handleEdit" :currentPage="page.index">
                 <template #toolbarBtn>
-                    <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
+                    <el-button v-permission="{ role: 'ADMIN', permission: 'competition:add' }" type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
                 </template>
             </TableCustom>
 
@@ -29,6 +29,7 @@ import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
 import { FormOption, FormOptionList } from '@/types/form-option';
 import { CirclePlusFilled } from '@element-plus/icons-vue';
+import permission from '@/store/permission';
 
 // 查询相关
 const query = reactive({

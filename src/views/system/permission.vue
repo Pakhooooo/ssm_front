@@ -37,7 +37,6 @@
 
 <script setup lang="ts" name="system-role">
 import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
 import { Role } from '@/types/role';
 import { fetchPermissions, updatePermission, deletePermission } from '@/api/permissionAPI';
 import TableCustom from '@/components/table-custom.vue';
