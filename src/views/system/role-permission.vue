@@ -7,14 +7,14 @@
             node-key="id"
             default-expand-all
             show-checkbox
-            :default-checked-keys="checkedKeys"
+            check-strictly
         />
         <el-button type="primary" @click="onSubmit">保存权限</el-button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, nextTick, watch } from 'vue';
 import { ElTree } from 'element-plus';
 import { menuData } from '@/components/menu';
 
@@ -26,22 +26,8 @@ const props = defineProps({
 });
 
 const menuObj = ref({});
-// const data = menuData.map((item) => {
-//     if (item.children) {
-//         menuObj.value[item.id] = item.children.map((sub) => sub.id);
-//     }
-//     return {
-//         id: item.id,
-//         label: item.title,
-//         children: item.children?.map((child) => {
-//             return {
-//                 id: child.id,
-//                 label: child.title,
-//             };
-//         }),
-//     };
-// });
 
+// 构建树数据
 const getTreeData = (data) => {
     return data.map((item) => {
         const obj: any = {
@@ -55,21 +41,26 @@ const getTreeData = (data) => {
         return obj;
     });
 };
+
+// 初始化树数据
 const data = getTreeData(menuData);
-const checkData = (data: string[]) => {
-    return data.filter((item) => {
-        return !menuObj.value[item] || data.toString().includes(menuObj.value[item].toString());
+
+// 初始化 checkedKeys
+const checkedKeys = ref<string[]>([]);
+
+// 监听权限数据变化，并手动设置选中节点
+watch(() => props.permissOptions.permiss, (newVal) => {
+    checkedKeys.value = newVal.map(item => item.id);
+    nextTick(() => {
+        tree.value?.setCheckedKeys(checkedKeys.value);
     });
-};
-// 获取当前权限
-const checkedKeys = ref<string[]>(checkData(props.permissOptions.permiss));
+}, { immediate: true });
 
 // 保存权限
 const tree = ref<InstanceType<typeof ElTree>>();
 const onSubmit = () => {
-    // 获取选中的权限
     const keys = [...tree.value!.getCheckedKeys(false), ...tree.value!.getHalfCheckedKeys()] as number[];
-    console.log(keys);
+    console.log(keys); // 保存权限时获取选中的 keys
 };
 </script>
 

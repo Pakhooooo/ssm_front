@@ -2,32 +2,32 @@ import { Menus } from '@/types/menu';
 
 export const menuData: Menus[] = [
     {
-        id: '23',
+        id: 23,
         title: '系统首页',
         index: '/dashboard',
         icon: 'Odometer',
     },
     {
-        id: '24',
+        id: 24,
         title: '系统管理',
         index: '1',
         icon: 'HomeFilled',
         children: [
             {
-                id: '25',
-                pid: '24',
+                id: 25,
+                pid: 24,
                 index: '/system-user',
                 title: '用户管理',
             },
             {
-                id: '26',
-                pid: '24',
+                id: 26,
+                pid: 24,
                 index: '/system-role',
                 title: '角色管理',
             },
             {
-                id: '27',
-                pid: '24',
+                id: 27,
+                pid: 24,
                 index: '/system-permission',
                 title: '权限管理',
             },
@@ -225,26 +225,26 @@ export const menuData: Menus[] = [
     //     ],
     // },
     {
-        id: '28',
+        id: 28,
         icon: 'Calendar',
         index: '7',
         title: '比赛管理',
         children: [
             {
-                id: '29',
-                pid: '28',
+                id: 29,
+                pid: 28,
                 index: '/competition',
                 title: '比赛信息',
             },
             {
-                id: '30',
-                pid: '28',
+                id: 30,
+                pid: 28,
                 index: '/competition/register',
                 title: '比赛报名',
             },
             {
-                id: '31',
-                pid: '28',
+                id: 31,
+                pid: 28,
                 index: '/competition/score',
                 title: '比赛成绩',
             }

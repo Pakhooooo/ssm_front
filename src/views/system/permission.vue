@@ -12,9 +12,6 @@
                     <el-tag type="success" v-if="rows.status">启用</el-tag>
                     <el-tag type="danger" v-else>禁用</el-tag>
                 </template>
-                <template #permissions="{ rows }">
-                    <el-button type="primary" size="small" plain @click="handlePermission(rows)">管理</el-button>
-                </template>
             </TableCustom>
         </div>
         <el-dialog :title="isEdit ? '编辑' : '新增'" v-model="visible" width="700px" destroy-on-close
@@ -29,19 +26,14 @@
                 </template>
             </TableDetail>
         </el-dialog>
-        <el-dialog title="权限管理" v-model="visible2" width="500px" destroy-on-close>
-            <RolePermission :permiss-options="permissOptions" />
-        </el-dialog>
     </div>
 </template>
 
 <script setup lang="ts" name="system-role">
 import { ref, reactive } from 'vue';
-import { Role } from '@/types/role';
 import { fetchPermissions, addPermission, deletePermission } from '@/api/permissionAPI';
 import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
-import RolePermission from './role-permission.vue'
 import { CirclePlusFilled } from '@element-plus/icons-vue';
 import { FormOption, FormOptionList } from '@/types/form-option';
 import { Permission } from '@/types/permission';
@@ -62,7 +54,6 @@ let columns = ref([
     { type: 'index', label: '序号', width: 55, align: 'center' },
     { prop: 'permissionName', label: '权限名称' },
     { prop: 'permissionKey', label: '权限标识' },
-    { prop: 'permissionType', label: '权限类型' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
@@ -89,18 +80,6 @@ const options = ref<FormOption>({
     list: [
         { type: 'input', label: '权限名称', prop: 'permissionName', required: true },
         { type: 'input', label: '权限标识', prop: 'permissionKey', required: true },
-        // { type: 'number', label: '父权限ID', prop: 'parentId' },
-        {
-            type: 'select',
-            label: '权限类型',
-            prop: 'permissionType',
-            required: true,
-            opts: [
-                { label: 'MENU', value: 'MENU' },
-                { label: 'BUTTON', value: 'BUTTON' },
-                { label: 'API', value: 'API' },
-            ]
-        },
     ]
 })
 const visible = ref(false);
@@ -144,10 +123,6 @@ const handleView = (row: Permission) => {
             prop: 'permissionKey',
             label: '权限标识',
         },
-        {
-            prop: 'permissionType',
-            label: '权限类型',
-        },
     ]
     visible1.value = true;
 };
@@ -158,17 +133,6 @@ const handleDelete = async (row: Permission) => {
     getData();
 }
 
-
-// 权限管理弹窗相关
-const visible2 = ref(false);
-const permissOptions = ref({})
-const handlePermission = (row: Role) => {
-    visible2.value = true;
-    permissOptions.value = {
-        id: row.id,
-        permiss: row.permiss
-    };
-}
 </script>
 
 <style scoped></style>

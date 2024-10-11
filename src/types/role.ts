@@ -4,5 +4,5 @@ export interface Role {
     roleName: string;
     roleCode: string;
     // status: boolean;
-    permiss: string[]
+    permissions: string[]
 }

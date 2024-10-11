@@ -155,7 +155,7 @@ const handlePermission = (row: Role) => {
     visible2.value = true;
     permissOptions.value = {
         id: row.id,
-        permiss: row.permiss
+        permiss: row.permissions
     };
 }
 </script>
