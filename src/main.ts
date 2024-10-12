@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import App from './App.vue';
 import router from './router';
+import { usePermissStore } from './store/permiss';
 import permissionDirective from './store/permission';
 import 'element-plus/dist/index.css';
 import './assets/css/icon.css';
@@ -20,7 +21,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 // const permiss = usePermissStore();
 // app.directive('permiss', {
 //     mounted(el, binding) {
-//         if (binding.value && !permiss.key.includes(String(binding.value))) {
+//         if (binding.value && !permiss.key.includes(binding.value)) {
 //             el['hidden'] = true;
 //         }
 //     },

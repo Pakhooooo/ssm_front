@@ -99,6 +99,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 const permissions = data.user.roles
                     .flatMap(role => role.permissions.map(permission => permission.permissionKey));
 
+                const permissionIds = data.user.roles
+                    .flatMap(role => role.permissions.map(permission => permission.id));
+                localStorage.setItem('permissionIds', JSON.stringify(permissionIds));
+
                 authStore.setToken(data.accessToken, data.user.id, data.user.username, roles, permissions);
 
                 ElMessage.success(response.data.message);
