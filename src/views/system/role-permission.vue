@@ -14,9 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, watch } from 'vue';
+import { ref, nextTick, watch, reactive, onMounted } from 'vue';
 import { ElTree } from 'element-plus';
 import { menuData } from '@/components/menu';
+import { fetchPermissions } from '@/api/permissionAPI';
 
 const props = defineProps({
     permissOptions: {
@@ -25,6 +26,11 @@ const props = defineProps({
     },
 });
 
+const query = reactive({
+    permissionType: 'API',
+});
+
+const data = ref([]);
 const menuObj = ref({});
 
 // 构建树数据
@@ -43,7 +49,7 @@ const getTreeData = (data) => {
 };
 
 // 初始化树数据
-const data = getTreeData(menuData);
+// const data = getTreeData(menuData);
 
 // 初始化 checkedKeys
 const checkedKeys = ref<string[]>([]);
@@ -56,12 +62,41 @@ watch(() => props.permissOptions.permiss, (newVal) => {
     });
 }, { immediate: true });
 
+// 获取权限数据并更新树形结构
+const getData = async () => {
+    try {
+        const res = await fetchPermissions(1, 0, query); // 获取数据
+        const fetchedPermissions = res.data.data.list;
+
+        const formattedPermissions = fetchedPermissions.map(perm => ({
+            id: perm.id,
+            permission: perm.permissionName
+        }));
+
+        // 合并菜单数据与获取的权限数据
+        const treeData = [...getTreeData(menuData), ...formattedPermissions.map(perm => ({
+            id: perm.id,
+            label: perm.permission, // 权限数据格式化
+        }))];
+        
+        data.value = treeData; // 更新树形数据
+    } catch (error) {
+        console.error('Failed to fetch permissions:', error);
+    }
+};
+
 // 保存权限
 const tree = ref<InstanceType<typeof ElTree>>();
 const onSubmit = () => {
     const keys = [...tree.value!.getCheckedKeys(false), ...tree.value!.getHalfCheckedKeys()] as number[];
     console.log(keys); // 保存权限时获取选中的 keys
 };
+
+// 在组件挂载时获取数据
+onMounted(() => {
+    getData();
+});
+
 </script>
 
 <style scoped></style>
