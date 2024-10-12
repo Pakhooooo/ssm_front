@@ -88,6 +88,7 @@ const handleCommand = (command: string) => {
         localStorage.removeItem('username');
         localStorage.removeItem('roles');
         localStorage.removeItem('permissions');
+        localStorage.removeItem('permissionIds');
         
         logout();
         router.push('/login');
