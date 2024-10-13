@@ -44,6 +44,7 @@ import TableDetail from '@/components/table-detail.vue';
 import RolePermission from './role-permission.vue'
 import { CirclePlusFilled } from '@element-plus/icons-vue';
 import { FormOption, FormOptionList } from '@/types/form-option';
+import EventBus from '@/eventBus';
 
 // 查询相关
 const query = reactive({
@@ -147,7 +148,6 @@ const handleDelete = async (role: Role) => {
     getData();
 }
 
-
 // 权限管理弹窗相关
 const visible2 = ref(false);
 const permissOptions = ref({})
@@ -158,6 +158,13 @@ const handlePermission = (row: Role) => {
         permiss: row.permissions
     };
 }
+
+EventBus.on('close-modal', async () => {
+    const res = await fetchRoles(page.index, page.size, query);
+    tableData.value = res.data.data.list;
+    visible2.value = false;
+});
+
 </script>
 
 <style scoped></style>

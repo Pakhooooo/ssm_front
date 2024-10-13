@@ -43,3 +43,15 @@ export const deleteRole = async (row: Role) => {
         ElMessage.error(error.response.data.message);
     }
 };
+
+export const saveRolePermission = async (roleId: number, query: Record<number, any>) => {
+    try {
+        const response = await api.post('/role/permission/add', {
+            roleId: roleId,
+            permissionIds: query
+        });
+        ElMessage.success(response.data.message);
+    } catch (error) {
+        ElMessage.error(error.response.data.message);
+    }
+};

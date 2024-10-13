@@ -18,6 +18,8 @@ import { ref, nextTick, watch, reactive, onMounted } from 'vue';
 import { ElTree } from 'element-plus';
 import { menuData } from '@/components/menu';
 import { fetchPermissions } from '@/api/permissionAPI';
+import { saveRolePermission } from '@/api/roleAPI';
+import EventBus from '@/eventBus';
 
 const props = defineProps({
     permissOptions: {
@@ -48,14 +50,14 @@ const getTreeData = (data) => {
     });
 };
 
-// 初始化树数据
-// const data = getTreeData(menuData);
+let roleId;
 
 // 初始化 checkedKeys
 const checkedKeys = ref<string[]>([]);
 
 // 监听权限数据变化，并手动设置选中节点
 watch(() => props.permissOptions.permiss, (newVal) => {
+    roleId = props.permissOptions.id;
     checkedKeys.value = newVal.map(item => item.id);
     nextTick(() => {
         tree.value?.setCheckedKeys(checkedKeys.value);
@@ -87,9 +89,12 @@ const getData = async () => {
 
 // 保存权限
 const tree = ref<InstanceType<typeof ElTree>>();
-const onSubmit = () => {
+const onSubmit = async () => {
     const keys = [...tree.value!.getCheckedKeys(false), ...tree.value!.getHalfCheckedKeys()] as number[];
     console.log(keys); // 保存权限时获取选中的 keys
+    
+    await saveRolePermission(roleId, keys);
+    EventBus.emit('close-modal');
 };
 
 // 在组件挂载时获取数据
