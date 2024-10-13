@@ -7,6 +7,9 @@
                 <!-- <template #toolbarBtn>
                     <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
                 </template> -->
+                <template #roles="{ rows }">
+                    <el-button type="primary" size="small" plain @click="handlePermission(rows)">管理</el-button>
+                </template>
             </TableCustom>
 
         </div>
@@ -48,6 +51,7 @@ let columns = ref([
     { prop: 'realName', label: '真实姓名' },
     { prop: 'age', label: '年龄' },
     { prop: 'sex', label: '性别' },
+    { prop: 'roles', label: '角色管理' },
     { prop: 'operator', label: '操作', width: 250 },
 ])
 const page = reactive({
@@ -147,6 +151,17 @@ const handleDelete = async (row: User) => {
     await deleteUser(row);
     getData();
 }
+
+const visible2 = ref(false);
+const permissOptions = ref({})
+const handlePermission = (row: User) => {
+    visible2.value = true;
+    // permissOptions.value = {
+    //     id: row.id,
+    //     permiss: row.permissions
+    // };
+}
+
 </script>
 
 <style scoped></style>

@@ -8,10 +8,10 @@
                 <template #toolbarBtn>
                     <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
                 </template>
-                <template #status="{ rows }">
+                <!-- <template #status="{ rows }">
                     <el-tag type="success" v-if="rows.status">启用</el-tag>
                     <el-tag type="danger" v-else>禁用</el-tag>
-                </template>
+                </template> -->
                 <template #permissions="{ rows }">
                     <el-button type="primary" size="small" plain @click="handlePermission(rows)">管理</el-button>
                 </template>
