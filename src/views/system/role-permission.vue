@@ -91,8 +91,6 @@ const getData = async () => {
 const tree = ref<InstanceType<typeof ElTree>>();
 const onSubmit = async () => {
     const keys = [...tree.value!.getCheckedKeys(false), ...tree.value!.getHalfCheckedKeys()] as number[];
-    console.log(keys); // 保存权限时获取选中的 keys
-    
     await saveRolePermission(roleId, keys);
     EventBus.emit('close-modal');
 };
