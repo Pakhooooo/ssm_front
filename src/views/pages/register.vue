@@ -95,11 +95,29 @@ const rules: FormRules = {
             message: '请输入用户名',
             trigger: 'blur',
         },
+        {
+            pattern: /^[a-z]+$/, message: '用户名只能包含小写英文字母', trigger: 'blur'
+        },
+        { min: 3, max: 20, message: '用户名长度必须在3到20个字符之间', trigger: 'blur' }
     ],
-    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-    phone: [{ required: true, message: '请输入手机号码', trigger: 'blur' }],
-    realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
-    age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { pattern: /^[a-zA-Z0-9!@#$%^&*()_+={}\[\]:;"'<>,.?~`-]+$/, message: '密码只能包含字母、数字和特殊符号', trigger: 'blur' }, // 密码规则
+        { min: 6, message: '密码至少为6个字符', trigger: 'blur' },
+        { max: 20, message: '密码最多为20个字符', trigger: 'blur' }
+    ],
+    phone: [
+        { required: true, message: '请输入手机号码', trigger: 'blur' },
+        { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }
+    ],
+    realName: [
+        { required: true, message: '请输入真实姓名', trigger: 'blur' },
+        { pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '真实姓名只能包含中文或英文字母', trigger: 'blur' }
+    ],
+    age: [
+        { required: true, message: '请输入年龄', trigger: 'blur' },
+        { min: 3, max: 20, message: '年龄必须在16岁到99岁之间', trigger: 'blur' }
+    ],
 };
 const register = ref<FormInstance>();
 const submitForm = async (formEl: FormInstance | undefined) => {
