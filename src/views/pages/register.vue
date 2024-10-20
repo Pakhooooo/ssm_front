@@ -116,7 +116,20 @@ const rules: FormRules = {
     ],
     age: [
         { required: true, message: '请输入年龄', trigger: 'blur' },
-        { min: 3, max: 20, message: '年龄必须在16岁到99岁之间', trigger: 'blur' }
+        {
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请输入年龄'));
+                } else if (!Number.isInteger(value)) {
+                    callback(new Error('年龄必须是整数'));
+                } else if (value < 16 || value > 99) {
+                    callback(new Error('年龄必须在16岁到99岁之间'));
+                } else {
+                    callback(); // 验证通过
+                }
+            },
+            trigger: 'blur'
+        }
     ],
 };
 const register = ref<FormInstance>();

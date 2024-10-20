@@ -250,4 +250,18 @@ export const menuData: Menus[] = [
             }
         ],
     },
+    {
+        id: 33,
+        icon: 'Calendar',
+        index: '8',
+        title: '公告管理',
+        children: [
+            {
+                id: 34,
+                pid: 33,
+                index: '/announcement',
+                title: '公告信息',
+            },
+        ],
+    }
 ];
