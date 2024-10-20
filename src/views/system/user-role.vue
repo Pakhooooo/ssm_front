@@ -17,7 +17,7 @@
 import { ref, nextTick, watch, reactive, onMounted } from 'vue';
 import { ElTree } from 'element-plus';
 import { fetchRoles } from '@/api/roleAPI';
-import { saveRolePermission } from '@/api/roleAPI';
+import { saveUserRole } from '@/api/userAPI';
 import EventBus from '@/eventBus';
 
 const props = defineProps({
@@ -73,7 +73,7 @@ const onSubmit = async () => {
     const keys = [...tree.value!.getCheckedKeys(false), ...tree.value!.getHalfCheckedKeys()] as number[];
     console.log(keys);
     
-    // await saveRolePermission(roleId, keys);
+    await saveUserRole(userId, keys);
     EventBus.emit('close-modal');
 };
 

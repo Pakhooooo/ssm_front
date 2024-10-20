@@ -96,7 +96,7 @@ const rules: FormRules = {
             trigger: 'blur',
         },
         {
-            pattern: /^[a-z]+$/, message: '用户名只能包含小写英文字母', trigger: 'blur'
+            pattern: /^[a-z0-9]+$/, message: '用户名只能包含小写英文字母和数字', trigger: 'blur'
         },
         { min: 3, max: 20, message: '用户名长度必须在3到20个字符之间', trigger: 'blur' }
     ],

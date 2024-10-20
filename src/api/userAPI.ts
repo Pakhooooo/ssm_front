@@ -47,3 +47,15 @@ export const deleteUser = async (row: User) => {
         ElMessage.error(error.response.data.message);
     }
 };
+
+export const saveUserRole = async (userId: number, query: Record<number, any>) => {
+    try {
+        const response = await api.post('/user/role/add', {
+            userId: userId,
+            roleIds: query
+        });
+        ElMessage.success(response.data.message);
+    } catch (error) {
+        ElMessage.error(error.response.data.message);
+    }
+};
