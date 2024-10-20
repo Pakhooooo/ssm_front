@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { toRefs, PropType, ref } from 'vue'
 import { Delete, Edit, View, Refresh } from '@element-plus/icons-vue';
-import { ElMessageBox } from 'element-plus';
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 const props = defineProps({
     // 表格相关
@@ -193,25 +193,26 @@ const handleSignUp = (row) => {
     })
         .then(async () => {
             try {
-                const response = await fetch('/api/register', {
+                const token = localStorage.getItem('token'); 
+                const response = await fetch('http://localhost:8080/api/register/add', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({
                         competitionId: row.id, // 传递比赛 ID
+                        userId: localStorage.getItem('userId')
                         // 可以根据需要传递更多数据
                     }),
                 });
 
                 // 处理响应
                 if (response.ok) {
-                    const data = await response.json();
-                    // ElMessage.success('报名成功！');
-                    // 可选：在这里可以更新 UI 或状态，例如更新比赛状态
+                    ElMessage.success('报名成功！');
                 } else {
                     const errorData = await response.json();
-                    // ElMessage.error(`报名失败: ${errorData.message}`);
+                    ElMessage.error(`报名失败: ${errorData.message}`);
                 }
             } catch (error) {
                 console.error('Error during signup:', error);
