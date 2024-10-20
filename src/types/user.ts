@@ -6,6 +6,7 @@ export interface User {
     phone: string;
     sex: string;
     realName: string;
+    roles: string[]
 }
 
 export interface Register {

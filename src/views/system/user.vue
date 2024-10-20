@@ -8,7 +8,7 @@
                     <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
                 </template> -->
                 <template #roles="{ rows }">
-                    <el-button type="primary" size="small" plain @click="handlePermission(rows)">管理</el-button>
+                    <el-button type="primary" size="small" plain @click="handleRole(rows)">管理</el-button>
                 </template>
             </TableCustom>
 
@@ -19,6 +19,9 @@
         </el-dialog>
         <el-dialog title="查看详情" v-model="visible1" width="700px" destroy-on-close>
             <TableDetail :data="viewData"></TableDetail>
+        </el-dialog>
+        <el-dialog title="角色管理" v-model="visible2" width="500px" destroy-on-close>
+            <UserRole :role-options="roleOptions" />
         </el-dialog>
     </div>
 </template>
@@ -31,6 +34,8 @@ import TableCustom from '@/components/table-custom.vue';
 import TableDetail from '@/components/table-detail.vue';
 import TableSearch from '@/components/table-search.vue';
 import { FormOption, FormOptionList } from '@/types/form-option';
+import UserRole from './user-role.vue'
+import EventBus from '@/eventBus';
 
 // 查询相关
 const query = reactive({
@@ -153,14 +158,20 @@ const handleDelete = async (row: User) => {
 }
 
 const visible2 = ref(false);
-const permissOptions = ref({})
-const handlePermission = (row: User) => {
+const roleOptions = ref({})
+const handleRole = (row: User) => {
     visible2.value = true;
-    // permissOptions.value = {
-    //     id: row.id,
-    //     permiss: row.permissions
-    // };
+    roleOptions.value = {
+        id: row.userId,
+        role: row.roles
+    };
 }
+
+EventBus.on('close-modal', async () => {
+    const res = await fetchUsers(page.index, page.size, query);
+    tableData.value = res.data.data.list;
+    visible2.value = false;
+});
 
 </script>
 
