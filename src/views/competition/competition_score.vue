@@ -5,7 +5,7 @@
             <TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
                 :delFunc="handleDelete" :changePage="changePage" :editFunc="handleEdit" :currentPage="page.index">
                 <template #toolbarBtn>
-                    <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
+                    <el-button v-permission="{ role: 'ADMIN' }" type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
                 </template>
             </TableCustom>
 
