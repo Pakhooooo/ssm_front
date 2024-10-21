@@ -44,7 +44,7 @@ const handleSearch = () => {
 // 表格相关
 let columns = ref([
     { type: 'index', label: '序号', width: 55, align: 'center' },
-    { prop: 'registerName', label: '参赛者姓名' },
+    { prop: 'realName', label: '参赛者姓名' },
     { prop: 'competitionName', label: '比赛名称' },
     { prop: 'competitionScore', label: '比赛成绩' },
     { prop: 'competitionRank', label: '比赛排名' },
@@ -75,7 +75,7 @@ let options = ref<FormOption>({
     labelWidth: '300px',
     span: 30,
     list: [
-        { type: 'input', label: '参赛者姓名', prop: 'registerName', required: true },
+        { type: 'input', label: '参赛者姓名', prop: 'realName', required: true },
         {
             type: 'select',
             label: '比赛名称',
@@ -127,7 +127,7 @@ const handleView = (row: Score) => {
             label: 'ID',
         },
         {
-            prop: 'registerName',
+            prop: 'realName',
             label: '参赛者姓名',
         },
         {
@@ -135,8 +135,16 @@ const handleView = (row: Score) => {
             label: '比赛名称',
         },
         {
-            prop: 'auditStatus',
-            label: '审核状态',
+            prop: 'competitionScore',
+            label: '比赛成绩',
+        },
+        {
+            prop: 'competitionRank',
+            label: '比赛排名',
+        },
+        {
+            prop: 'scoreStatus',
+            label: '成绩状态',
         }
     ]
     visible1.value = true;

@@ -20,6 +20,8 @@ export const addScore = async (score: Score) => {
         if (score.id != null) {
             const response = await api.put('/score/update', {
                 id: score.id,
+                userId: score.userId,
+                competitionId: score.competitionName,
                 competitionScore: score.competitionScore,
                 competitionRank: score.competitionRank
             });
