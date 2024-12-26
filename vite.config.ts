@@ -28,4 +28,10 @@ export default defineConfig({
 	define: {
 		__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "true",
 	},
+	server: {
+		port: 5173, // 设置默认端口为 5173
+	},
+	preview: {
+		port: 5173, // 设置预览环境端口
+	}
 });
